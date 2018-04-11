@@ -1,0 +1,26 @@
+int isPrime(long n) {
+    if(n < 2)
+        return 0;
+
+    for (long i = 2; i * i <= n; i++) {
+        if (n % i == 0)
+            return 0;
+    }
+    return 1;
+}
+int main()
+{
+int counter = 0,userInput;
+scanf("%d",&userInput);
+for(int i = 1; ; i++)
+{
+    if(isPrime(i))
+        counter++;
+
+    if(counter == userInput)
+    {
+        printf("%d",i);
+        break;
+    }
+}
+}
