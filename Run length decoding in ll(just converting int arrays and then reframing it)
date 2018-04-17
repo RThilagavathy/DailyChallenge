@@ -1,0 +1,104 @@
+
+Input: a->5->b->r->3->NULL
+Output: a->a->a->a->a->b->r->r->r->NULL
+Input: a->1->0->b->r->3->a->3->NULL
+Output: a->a->a->a->a->a->a->a->a->a->b->r->r->r->a->a->a->NULL
+Code:
+  struct SchNode
+  {
+	char ch;
+	struct SchNode * nextNode;
+	};
+  #include "common.h"
+#include "ExpCUtils.h"
+#include <ctype.h>
+#include <stdio.h>
+#include <string.h>
+struct SchNode * func(struct SchNode * str)
+{
+	if(str==NULL)
+	  return NULL;
+	else
+	{
+	    struct SchNode *one=str;
+	    int i,j,k=0,l=0,z=0,num[100];
+	    char alp[100],act[100];
+	    while(one!=NULL)
+	    {
+	      act[k++]=one->ch;
+	      one=one->nextNode;
+	    }
+	    if(k==1)
+	       return str;
+	    else
+	    {
+	        for(i=0;i<k;i++)
+	        {
+	            if(isalpha(act[i]))
+	            {
+	                if(isalpha(act[i+1]))
+	                {
+	                    if(i+1==k-1)
+	                    {
+	                        alp[l++]=act[i];
+	                        num[z++]=1;
+	                        alp[l++]=act[i+1];
+	                        num[z++]=1;
+	                        i++;
+	                    }
+	                    else
+	                    {
+	                        alp[l++]=act[i];
+	                        num[z++]=1;
+	                    }
+	                }
+	                else //it will be another number
+	                {
+	                    alp[l++]=act[i];
+	                    if(i==k-1)
+	                       num[z++]=1;
+	                }
+	            }
+	            else if(isdigit(act[i]))
+	            {
+	                    if(isdigit(act[i+1]))
+	                    {
+	                        int x[2],sum=0;
+	                        x[0]=act[i]-'0';
+	                        x[1]=act[i+1]-'0';
+	                        i++;
+	                        //to join x[0] and x[1]
+	                        for(int j=0;j<2;j++)
+	                           sum=sum*10 + x[j];
+	                        num[z++]=sum;    
+	                    }
+	                    else
+	                    {
+	                        num[z++]=act[i]-'0';
+	                    }
+	            }
+	        }
+	        int no=0;
+	        char final[100];
+	        for(i=0;i<z;i++)
+	        {
+	            for(j=1;j<=num[i];j++)
+	            {
+	                final[no++]=alp[i];
+	            }
+	        }
+	        struct SchNode * new1=NULL;
+	        void push(struct SchNode **,char);
+	        for(i=no-1;i>=0;i--)
+	            push(&new1,final[i]);
+	       return new1;     
+	    }
+	}
+}
+void push(struct SchNode ** new1,char ch)
+{
+    struct SchNode * one =(struct SchNode *)malloc(sizeof(struct SchNode));
+    one->ch=ch;
+    one->nextNode=(*new1);
+    (*new1)=one;
+}
